@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-api
+  template:
+    metadata:
+      labels:
+        app: user-api
+    spec:
+      containers:
+        - name: user-api
+          image: todocr.azurecr.io/demo/user-apis:1.0
+          ports:
+            - containerPort: 8082
+      imagePullSecrets:
+        - name: todocr
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-api
+spec:
+  selector:
+    name: user-api
+  ports:
+  - port: 8082
+    targetPort: 8082
